@@ -8,6 +8,7 @@ HAL.Models.Resource = Backbone.Model.extend({
     this.set(representation);
     this.unset('_embedded', { silent: true });
     this.unset('_links', { silent: true });
+    this.unset('_actions', { silent: true });
   },
 
   buildEmbeddedResources: function(embeddedResources) {
