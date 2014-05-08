@@ -65,3 +65,6 @@ body table.table {
 .ajax-loader.visible {
   opacity: 1;
 }
+.login {
+  margin-left: 0!important;
+}

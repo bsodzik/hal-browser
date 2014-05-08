@@ -4,6 +4,11 @@ HAL.Views.Explorer = Backbone.View.extend({
     this.vent = opts.vent;
     this.navigationView = new HAL.Views.Navigation({ vent: this.vent });
     this.resourceView = new HAL.Views.Resource({ vent: this.vent });
+    this.vent.bind('response', function (e) {
+      if(e.jqxhr.status == 403 || e.jqxhr.status == 401) {
+        self.$el.find('.login').slideDown()
+      }
+    })
   },
 
   className: 'explorer span6',
