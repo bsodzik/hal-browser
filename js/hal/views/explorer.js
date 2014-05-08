@@ -7,6 +7,9 @@ HAL.Views.Explorer = Backbone.View.extend({
     this.vent.bind('response', function (e) {
       if(e.jqxhr.status == 403 || e.jqxhr.status == 401) {
         self.$el.find('.login').slideDown()
+        self.$el.find('.logout').hide()
+      } else {
+        self.$el.find('.logout').slideDown()
       }
     })
   },

@@ -64,3 +64,11 @@ HAL.Browser = Backbone.Router.extend({
     }
   }
 });
+
+
+$(function () {
+  $('[data-behaviour=logout]').click(function () {
+    localStorage.removeItem('access_token')
+    document.location.href = '/browser.html'
+  })
+});
