@@ -27,7 +27,12 @@
 .inspector { height: 100%; }
 
 .documentation { height: 100%; }
-.documentation iframe { width: 100%; height: 100%; }
+.documentation iframe { 
+  width: 100%; height: 100%;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: gray;
+}
 
 .modal input, .modal textarea {
   width: 90%;
