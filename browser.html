@@ -11,6 +11,7 @@
       .sidebar-nav {
         padding: 9px 0;
       }
+      .hide {display: none;}
     </style>
     <link rel="stylesheet" media="screen" href="vendor/css/bootstrap-responsive.css" />
     <link rel="stylesheet" media="screen" href="styles.css" />
@@ -24,7 +25,8 @@
           <a class="brand">The HAL Browser</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a href="#/" id="entryPointLink">Go To Entry Point</a></li>
+              <li><a href="https://developers.bootic.net">Bootic API docs</a></li>
+              <li><a href="/bootic-hal-browser/browser.html" id="entryPointLink">Go To Entry Point</a></li>
               <li><a href="https://github.com/mikekelly/hal-browser">About The HAL Browser</a></li>
             </ul>
           </div>
@@ -40,6 +42,13 @@
       <input class="span11" id="appendedInputButton" type="text" value="<%= url %>">
       <button class="btn" type="submit">Go!</button>
        <span class="ajax-loader"></span>
+    </div>
+    <div class="span12 login hide alert">
+      Invalid or expired access token. 
+      <a href="https://auth.bootic.net/oauth/authorize?client_id=dafc7bd4b76f2747fbd20d94024ae163&response_type=token&scope=admin&redirect_uri=https://developers.bootic.net/hal/" class="btn btn-primary">Login</a>
+    </div>
+    <div class="span12 logout hide alert"> 
+      <a href="#" class="btn" data-behaviour="logout">Logout</a>
     </div>
 </form>
   </script>
@@ -239,7 +248,7 @@ Content-Type: application/json
   <script>
     var browser = new HAL.Browser({
       container: $('#browser'),
-      entryPoint: '/'
+      entryPoint: 'https://api.bootic.net/v1'
     });
     Backbone.history.start();
   </script>

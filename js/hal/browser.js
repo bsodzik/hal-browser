@@ -2,25 +2,24 @@ HAL.Browser = Backbone.Router.extend({
   initialize: function(opts) {
     opts = opts || {};
 
-    var vent = _.extend({}, Backbone.Events),
+    this.vent = _.extend({}, Backbone.Events),
     $container = opts.container || $('#browser');
-
     this.entryPoint = opts.entryPoint || '/';
 
     // TODO: don't hang currentDoc off namespace
-    vent.bind('response', function(e) {
+    this.vent.bind('response', function(e) {
       window.HAL.currentDocument = e.resource || {};
     });
 
-    vent.bind('location-go', _.bind(this.loadUrl, this));
+    this.vent.bind('location-go', _.bind(this.loadUrl, this));
 
-    HAL.client = new HAL.Http.Client({ vent: vent });
+    HAL.client = new HAL.Http.Client({ vent: this.vent });
 
-    var browser = new HAL.Views.Browser({ vent: vent, entryPoint: this.entryPoint });
+    var browser = new HAL.Views.Browser({ vent: this.vent, entryPoint: this.entryPoint });
     browser.render()
 
     $container.html(browser.el);
-    vent.trigger('app:loaded');
+    this.vent.trigger('app:loaded');
 
     if (window.location.hash === '') {
       window.location.hash = this.entryPoint;
@@ -29,7 +28,7 @@ HAL.Browser = Backbone.Router.extend({
     if(location.hash.slice(1,9) === 'NON-GET:') {
       new HAL.Views.NonSafeRequestDialog({
             href: location.hash.slice(9),
-            vent: vent
+            vent: this.vent
           }).render({});
     }
   },
@@ -51,10 +50,25 @@ HAL.Browser = Backbone.Router.extend({
   },
 
   resourceRoute: function() {
-    url = location.hash.slice(1);
+    var url = location.hash.slice(1),
+    exp = /^access_token/;
+
     console.log('target url changed to: ' + url);
-    if (url.slice(0,8) !== 'NON-GET:') {
+    if(exp.test(url)) {
+      var sp = url.split('='), token = sp[1];
+      localStorage.setItem('access_token', token)
+      window.location.hash = this.entryPoint;
+    } else if (url.slice(0,8) !== 'NON-GET:') {
+      this.vent.trigger('app:login', localStorage.getItem('access_token'));
       HAL.client.get(url);
     }
   }
+});
+
+
+$(function () {
+  $('[data-behaviour=logout]').click(function () {
+    localStorage.removeItem('access_token')
+    document.location.href = '/browser.html'
+  })
 });

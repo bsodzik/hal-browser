@@ -7,7 +7,10 @@ HAL.Views.RequestHeaders = Backbone.View.extend({
 
     this.vent.bind('app:loaded', function() {
       self.updateRequestHeaders();
-    });
+    }).bind('app:login', function (token) {
+      self.$('textarea').val('Authorization: Bearer ' + token);
+      self.updateRequestHeaders()
+    })
   },
 
   className: 'request-headers',
